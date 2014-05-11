@@ -1,0 +1,26 @@
+{% extends "_layouts/_master.twig" %}
+
+{% block content %}
+  {% if message | length %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info">
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-12">
+      <form role="form" action="/projects/{{ project._id }}/edit" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="form-group">
+          <input type="text" name="name" class="form-control" placeholder="Project Name" value="{{ project.name }}">
+        </div>
+
+        <button type="submit" class="btn btn-default">Edit Project</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

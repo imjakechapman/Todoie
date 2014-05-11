@@ -13,8 +13,8 @@
 
   <div class="row">
     <div class="col-md-12">
-      <form role="form" action="/todos/{{ todo.id }}/edit" method="POST">
-        <input type='hidden' name="action" value="PUT">
+      <form role="form" action="/projects/{{ todo.project._id }}/todos/{{ todo.id }}/edit" method="POST">
+        <input type='hidden' name="_method" value="PUT">
         <div class="form-group">
           <input type="text" name="description" class="form-control" placeholder="What ya got going on?" value="{{ todo.description }}">
         </div>

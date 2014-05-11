@@ -1,0 +1,93 @@
+{% extends "_layouts/_master.twig" %}
+
+{% block content %}
+  {% if message | length %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info">
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="page-header" style="overflow: hidden; margin-top: 0;">
+        <h1 class="pull-left">{{ project.name }}</h1>
+        <span class="pull-right">
+          <ul class="pager">
+            <li class="previous"><a href="/projects">&larr; Back To Projects</a></li>
+          </ul>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <div class="panel panel-default">
+        <div class="panel-heading" style="overflow: hidden;">
+          Total Todos: {{ project.todos.length }}
+        </div>
+        {% if project.todos.length %}
+        <div class="panel-body">
+          <div class="progress" style="margin: 0;">
+            <div class="progress-bar progress-bar-success" style="width: {{ completion }}">
+              {% if totalCompletion > 1 %} {{ totalCompletion }} Completion {% endif %}
+              <span class="sr-only">35% Complete (success)</span>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <ul class="list-group">
+        {% if project.todos | length %}
+          {% for todo in project.todos %}
+          {% if todo.completed == true %}
+          <li class="list-group-item list-group-item-success">
+            <span class="badge completed">Completed</span>
+            {{ todo.description }}
+          </li>
+          {% else %}
+          <li class="list-group-item">
+            <span class="badge warning"><a href="/projects/{{ project._id }}/todos/{{ todo.id }}/delete">delete</a></span>
+            <span class="badge primary"><a href="/projects/{{ project._id }}/todos/{{ todo.id }}/edit">edit</a></span>
+            <span class="badge primary"><a href="/projects/{{ project._id }}/todos/{{ todo.id }}/complete">complete</a></span>
+            {{ todo.description }}</li>
+          {% endif %}
+          {% endfor %}
+        {% else %}
+          <li class="list-group-item">Project is empty</li>
+        {% endif %}
+        </ul>
+
+        <div class="panel-footer">
+          <div class="btn-group">
+            <a href="/projects/{{ project._id }}/edit" class="btn btn-default">Edit Project</a>
+            {% if project.hasCompleted() %}
+            <a href="/projects/{{ project._id }}/removeCompleted" class="btn btn-default">Remove Completed Tasks</a>
+            {% endif %}
+            <a href="/projects/{{ project._id }}/delete" onclick="return confirm('Are you sure?');" class="btn btn-danger">Delete Project</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    {# Todo Form #}
+    <div class="col-md-4">
+      <form role="form" action="/projects/{{ project._id }}/todos" method="POST">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Todo</label>
+          <input type="text" name="description" class="form-control" placeholder="What ya got going on?">
+        </div>
+
+        <button type="submit" class="btn btn-default">Create Todo</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

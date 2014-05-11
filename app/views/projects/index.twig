@@ -1,0 +1,52 @@
+{% extends "_layouts/_master.twig" %}
+
+{% block content %}
+  {% if message | length %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-info">
+        <p>{{ message }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Total Projects: {{ projects.length }}</h3>
+        </div>
+
+        <ul class="list-group">
+        {% if projects | length %}
+          {% for project in projects %}
+          <a href="/projects/{{ project._id }}" class="list-group-item">
+            <span class="badge pull-right">{{ project.filteredTodos().length }}</span>
+            {{ project.name }}
+          </a>
+          {% endfor %}
+        {% else %}
+          <li class="list-group-item">No Projects</li>
+        {% endif %}
+        </ul>
+      </div>
+
+    </div>
+
+
+
+    {# Todo Form #}
+    <div class="col-md-4">
+      <form role="form" action="/projects" method="POST">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Project</label>
+          <input type="text" name="projectName" class="form-control" placeholder="Create a new project">
+        </div>
+
+        <button type="submit" class="btn btn-default">Create Project</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
